@@ -1,0 +1,222 @@
+/* Dark theme colors */
+:root {
+    --primary-bg: #121212;
+    --secondary-bg: #1e1e1e;
+    --primary-text: #ffffff;
+    --secondary-text: #b3b3b3;
+    --accent-color: #0066cc;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+.navbar, .footer, .rooms {
+    background-color: var(--secondary-bg);
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+}
+
+.nav-link, .dropdown-item, .footer a {
+    color: var(--primary-text);
+}
+
+.nav-link:hover, .dropdown-item:hover, .footer a:hover {
+    color: var(--accent-color);
+}
+
+.btn-custom {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    border: none;
+}
+
+.btn-custom:hover {
+    background-color: darken(var(--accent-color), 10%);
+}
+
+.room-name {
+    color: var(--primary-text);
+}
+
+.page-link {
+    color: var(--primary-text);
+}
+
+.page-link:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+}
+
+.search-item input, .search-item select {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    border: none;
+}
+
+.search-item input::placeholder {
+    color: var(--secondary-text);
+}
+
+.rooms {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.rooms img {
+    border-radius: 10px;
+}
+
+.view-detail-btn {
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+}
+
+.view-detail-btn:hover {
+    background-color: darken(var(--accent-color), 10%);
+}
+
+.footer {
+    background-color: var(--secondary-bg);
+    color: var(--secondary-text);
+}
+
+.footer a {
+    color: var(--primary-text);
+}
+
+.footer .social-links a {
+    color: var(--secondary-text);
+}
+
+.footer .social-links a:hover {
+    color: var(--primary-text);
+}
+
+
+
+
+.room-card {
+    display: flex;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 1rem 0;
+    background-color: var(--secondary-bg);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.room-image {
+    width: 350px;
+}
+
+.room-image img {
+    width: 100%;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.room-details {
+    flex: 1;
+    padding: 20px;
+}
+
+.room-name {
+    margin: 0;
+}
+
+.room-type {
+    margin-top: 0.5rem;
+    color: #888;
+}
+
+.availability p {
+    margin: 0;
+}
+
+.available {
+    color: green;
+}
+
+.not-available {
+    color: red;
+}
+
+.booking-info p {
+    margin: 0.5rem 0;
+}
+
+.additional-info p {
+    margin: 0.5rem 0;
+}
+
+.price-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.price {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.view-details-btn {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.view-details-btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+
+
+.search-item i {
+    margin-right: 10px;
+}
+
+.search-item input[type="text"],
+.search-item input[type="datetime-local"],
+.search-item select {
+    width: 180px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-btn {
+    width: 7rem;
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: darkgray;
+}
+
+
+
+
+
+
+
+
+
+
+
+

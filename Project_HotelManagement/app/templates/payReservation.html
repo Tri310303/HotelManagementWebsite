@@ -1,0 +1,125 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Paying for reservation{% endblock %}
+{% block link %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href='https://fonts.googleapis.com/css?family=Allerta Stencil' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+    .reservation-check-table {
+        background-color: #1f1f1f;
+        border: 1px solid #333;
+        color: #ffffff;
+    }
+    .reservation-check-table th,
+    .reservation-check-table td {
+        border: 1px solid #333;
+    }
+    .table th {
+        background-color: #2b2b2b;
+    }
+    .btn-custom {
+        background-color: #ff4081;
+        border: none;
+        color: white;
+    }
+    .btn-custom:hover {
+        background-color: #ff79b0;
+    }
+    .form-group h4 {
+        color: #ff4081;
+    }
+    .form-group input[type="text"] {
+        background-color: transparent;
+        color: #ff4081;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<h3 class="text-center" style="border: 1px solid #ff4081; padding: 10px; border-radius: 8px;">RESERVATION CHECK</h3>
+<table class="table reservation-check-table">
+    <thead>
+        <tr>
+            <th style="width: 50%;">Booking: {{ session.get('reservation_info')[room_id].users['1'].customerName }}</th>
+            <th>Room: {{ room_info.name }}</th>
+        </tr>
+        <tr>
+            <th>Checkin time: {{ session.get('reservation_info')[room_id].checkin_time }}</th>
+            <th>Checkout time: {{ session.get('reservation_info')[room_id].checkout_time }}</th>
+        </tr>
+    </thead>
+</table>
+<table class="table reservation-check-table">
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th style="width: 25%;">Customer</th>
+            <th style="width: 25%;">Customer type</th>
+            <th style="width: 25%;">Identification number</th>
+            <th style="width: 25%;">Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in session.get('reservation_info')[room_id].users %}
+        <tr>
+            <td>{{ i }}</td>
+            <td>{{ session.get('reservation_info')[room_id].users[i].customerName }}</td>
+            <td>{{ session.get('reservation_info')[room_id].users[i].customerType }}</td>
+            <td>{{ session.get('reservation_info')[room_id].users[i].customerIdNum }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<form action="/payment" method="POST" class="form-group">
+    <div>
+        <h4 class="mt-2" style="font-size: larger;">
+            <b>DEPOSIT:</b>
+            <i class="fa-solid fa-dong-sign"></i>
+            <input name="amount" style="border: none; outline: 0; font-weight: 700;" type="text" value="{{ session.get('reservation_info')[room_id].total_price }}" readonly>
+        </h4>
+    </div>
+    {% if session['reservation_info'][room_id]['is_paid'] != 'done' and current_user.role|string == 'UserRole.CUSTOMER' %}
+    <input type="submit" class="btn btn-custom mt-3" value="Pay now">
+    {% endif %}
+</form>
+{% if session['reservation_info'][room_id]['is_paid'] == 'done' or current_user.role|string == 'UserRole.RECEPTIONIST' %}
+<input onclick="payForReservation('{{ room_id }}', {{ session.get('reservation_info') }})" type="button" class="btn btn-custom mt-3" value="Confirm reservation">
+{% endif %}
+
+<script>
+function payForReservation(room_id, reservationInfo) {
+    if (confirm('Pay 30% for this room reservation?') === true) {
+        fetch('/api/reservation-paying', {
+            method: 'POST',
+            body: JSON.stringify({ room_id, reservationInfo }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.code === 200) {
+                fetch(`/confirm_reservation/${room_id}`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/';
+                    } else {
+                        console.error('Error confirming reservation:', response.statusText);
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+            } else {
+                console.error('Payment failed:', data.error);
+            }
+        })
+        .catch(err => console.error('Error:', err));
+    }
+}
+</script>
+
+{% endblock %}

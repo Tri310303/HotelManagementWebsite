@@ -1,0 +1,73 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Tripple T Hotel{% endblock %}
+
+{% block content %}
+<div class="search-section">
+    <div class="search-form row">
+        <form class="d-flex">
+            <div class="search-item ">
+                <i class="fas fa-search"></i>
+                <span>Room Name</span>
+                <input name="kw" id="kw" class="search-input" type="text" placeholder="Search">
+            </div>
+            <div class="search-item">
+                <i class="far fa-calendar"></i>
+                <span>Check in</span>
+                <input name="checkin" id="check_in_date" type="datetime-local">
+            </div>
+            <div class="search-item">
+                <i class="far fa-calendar"></i>
+                <span>Check out</span>
+                <input name="checkout" id="check_out_date" type="datetime-local">
+            </div>
+            <div class="search-item">
+                <i class="fas fa-bed"></i>
+                <span>Room Type</span>
+                <select name="roomType" id="roomType">
+                    {% for rt in room_types %}
+                    <option value="{{ rt.id }}">{{ rt.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button onclick="search()" class="search-btn" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+{% for r in rooms_info %}
+<div class="room-card">
+    <div class="room-image">
+        <a href="{{ url_for('room_details', room_id=r.id) }}">
+            <img src="{{ url_for('static', filename=r.image) }}" alt="{{ r.name }}">
+        </a>
+    </div>
+    <div class="room-details">
+        <h4 class="room-name">{{ r.name }}</h4>
+        <p class="room-type">{{ r.room_type }}</p>
+        <div class="availability">
+            <p class="available"><i class="fas fa-check-circle"></i> Available</p>
+        </div>
+        <div class="booking-info">
+            <p class="booked"><i class="far fa-credit-card"></i> {{ r.booked }} times booked</p>
+            <p class="reviews"><i class="far fa-star"></i> Best booking - {{ r.best_booking_reviews }} reviews</p>
+        </div>
+        <div class="additional-info">
+            <p class="services"><i class="fas fa-check"></i> Free cancellation <i class="fas fa-check"></i> Breakfast
+                included</p>
+        </div>
+        <div class="price-section">
+            <h5 class="price">{{ "{:,.1f}".format(r.price) }} VND</h5>
+            <a href="{{ url_for('room_details', room_id=r.id) }}" class="view-details-btn">View Details <i
+                    class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<ul class="pagination " style="position: absolute; right: +720px; ">
+    {% for idx in range(1, pages+1) %}
+    <li class="page-item page-item {% if 'pages' in request.args and request.args.pages|int == idx %}active-custom{% elif 'pages' not in request.args and idx == 1 %}active-custom{% endif %}">
+        <a class="page-link" href="{{ url_for('home', pages=idx) }}" style="color:black">{{ idx }}</a></li>
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}
